@@ -2,15 +2,15 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.subsytems.DriveBase;
+import org.firstinspires.ftc.teamcode.subsytems.DriveBaseSubsystem;
 
 import java.util.function.DoubleSupplier;
 
 public class DriveDefaultCommand extends CommandBase {
-    final DriveBase drive;
+    final DriveBaseSubsystem drive;
     final DoubleSupplier leftX, leftY, rightX;
 
-    public DriveDefaultCommand(DriveBase drive, DoubleSupplier leftX, DoubleSupplier leftY, DoubleSupplier rightX)
+    public DriveDefaultCommand(DriveBaseSubsystem drive, DoubleSupplier leftX, DoubleSupplier leftY, DoubleSupplier rightX)
     {
         this.drive = drive;
         this.leftX = leftX;

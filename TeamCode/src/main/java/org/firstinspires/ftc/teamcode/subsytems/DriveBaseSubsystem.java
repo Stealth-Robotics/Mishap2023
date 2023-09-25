@@ -5,7 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class DriveBase extends SubsystemBase {
+public class DriveBaseSubsystem extends SubsystemBase {
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
@@ -13,15 +13,16 @@ public class DriveBase extends SubsystemBase {
 
     BNO055IMU imu;
 
-    public DriveBase(HardwareMap hardwareMap)
+    public DriveBaseSubsystem(HardwareMap hardwareMap)
     {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        // Check directions and reverse if needed
+        // Check directions and reverse if needed--
 
+        // Set default behavior when no power / input maybe?
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
