@@ -8,6 +8,9 @@ public class ClawSubsystem extends SubsystemBase {
     private Servo clawRotationServo;
     private Servo clawElevationServo;
     private Servo clawMainServo;
+    private boolean clawOpen = false;
+    private final double OPEN_POS = 1;
+    private final double CLOSE_POS = 0;
 
     public ClawSubsystem(HardwareMap hardwareMap) {
 
@@ -15,8 +18,38 @@ public class ClawSubsystem extends SubsystemBase {
         clawRotationServo = hardwareMap.get(Servo.class, "clawRotationServo");
         clawElevationServo = hardwareMap.get(Servo.class, "clawElevationServo");
         clawMainServo = hardwareMap.get(Servo.class, "clasMainServo");
-
-        
     }
 
+    public double getClawElevation() {
+        return clawElevationServo.getPosition();
+    }
+
+    public double getClawRotation() {
+        return clawRotationServo.getPosition();
+    }
+
+    public boolean getClawOpen() {
+        return clawOpen;
+    }
+
+    public void toggleClaw() {
+        clawOpen = !clawOpen;
+        clawMainServo.setPosition(clawOpen ? OPEN_POS : CLOSE_POS);
+    }
+
+    public void setClawRotationServo(double input) {
+        clawRotationServo.setPosition(input);
+    }
+
+    public void setClawElevationServo(double input) {
+        clawElevationServo.setPosition(input);
+    }
+
+    public void openClaw() {
+        clawMainServo.setPosition(OPEN_POS);
+    }
+
+    public void closeClaw() {
+        clawMainServo.setPosition(CLOSE_POS);
+    }
 }
