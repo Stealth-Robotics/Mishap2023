@@ -17,7 +17,7 @@ public class ClawSubsystem extends SubsystemBase {
         // grab servo motors
         clawRotationServo = hardwareMap.get(Servo.class, "clawRotationServo");
         clawElevationServo = hardwareMap.get(Servo.class, "clawElevationServo");
-        clawMainServo = hardwareMap.get(Servo.class, "clasMainServo");
+        clawMainServo = hardwareMap.get(Servo.class, "clawMainServo");
     }
 
     public double getClawElevation() {

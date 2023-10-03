@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.subsytems.ClawSubsystem;
@@ -36,5 +37,20 @@ public abstract class Teleop extends StealthOpMode {
         opperatorGamepad.getGamepadButton(GamepadKeys.Button.A).
                 whenPressed(new InstantCommand(() -> clawSubsystem.toggleClaw()));
 
+        driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP).
+                whenPressed(new InstantCommand(() -> driveBaseSubsystem.resetHeading()));
+
     }
+
+    @SuppressWarnings("unused")
+    @TeleOp(name = "RED | Telo-Op", group = "Red")
+    public static class RedTeleop extends Teleop {
+    }
+
+    @SuppressWarnings("unused")
+    @TeleOp(name = "BLUE | Telo-Op", group = "Blue")
+    public static class BlueTeleop extends Teleop {
+    }
+
+
 }

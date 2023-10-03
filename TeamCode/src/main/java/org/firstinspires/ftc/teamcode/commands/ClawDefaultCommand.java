@@ -42,8 +42,5 @@ public class ClawDefaultCommand extends CommandBase {
         if (leftY.getAsDouble() > threshhold) {
             clawSubsystem.setClawElevationServo((clawSubsystem.getClawElevation()) + inc);
         }
-
-
     }
-
 }
