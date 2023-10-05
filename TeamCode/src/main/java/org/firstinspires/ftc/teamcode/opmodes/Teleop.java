@@ -28,9 +28,9 @@ public abstract class Teleop extends StealthOpMode {
         driveBaseSubsystem.setDefaultCommand(
                 new DriveDefaultCommand(
                         driveBaseSubsystem,
-                        () -> driverGamepad.getLeftX(),
                         () -> driverGamepad.getLeftY(),
-                        () -> driverGamepad.getRightX()
+                        () -> driverGamepad.getLeftX(),
+                        () -> -driverGamepad.getRightX()
                 )
         );
 

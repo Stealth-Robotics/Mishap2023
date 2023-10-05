@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsytems;
 import static org.stealthrobotics.library.opmodes.StealthOpMode.telemetry;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,14 +15,17 @@ public class DriveBaseSubsystem extends SubsystemBase {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    private double rotX = 0;
+    private double rotY = 0;
+
     private double headingOffset;
 
     BNO055IMU imu;
 
+    Vector2d input;
+
     public DriveBaseSubsystem(HardwareMap hardwareMap)
     {
-
-
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -40,7 +44,6 @@ public class DriveBaseSubsystem extends SubsystemBase {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
 
@@ -55,16 +58,14 @@ public class DriveBaseSubsystem extends SubsystemBase {
         return -imu.getAngularOrientation().firstAngle + headingOffset;
     }
 
-    public void drive(double leftStickX, double leftStickY, double rightStickX)
+    public void drive(double leftStickY, double leftStickX, double rightStickX)
     {
-        double x = leftStickX * 1.1;
+        double x = leftStickX;
         double y = -leftStickY;
         double rotation = rightStickX;
-        double botHeading = getAngle();
 
-        double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
-        double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
-
+        rotX = x * Math.cos(getAngle()) - y * Math.sin(getAngle());
+        rotY = x * Math.sin(getAngle()) + y * Math.cos(getAngle());
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -84,5 +85,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         telemetry.addData("Robot Heading: ", getAngle());
+        telemetry.addData("Rot X: ", rotX);
+        telemetry.addData("Rot Y: ", rotY);
+        telemetry.addData("Heading offset: ", headingOffset);
     }
 }

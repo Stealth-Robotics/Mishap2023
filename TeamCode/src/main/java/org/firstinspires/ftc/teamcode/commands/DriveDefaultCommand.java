@@ -10,7 +10,7 @@ public class DriveDefaultCommand extends CommandBase {
     final DriveBaseSubsystem drive;
     final DoubleSupplier leftX, leftY, rightX;
 
-    public DriveDefaultCommand(DriveBaseSubsystem drive, DoubleSupplier leftX, DoubleSupplier leftY, DoubleSupplier rightX)
+    public DriveDefaultCommand(DriveBaseSubsystem drive, DoubleSupplier leftY, DoubleSupplier leftX, DoubleSupplier rightX)
     {
         this.drive = drive;
         this.leftX = leftX;
