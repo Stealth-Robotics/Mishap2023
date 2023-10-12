@@ -9,14 +9,13 @@ import java.util.function.DoubleSupplier;
 
 public class ClawDefaultCommand extends CommandBase {
     final ClawSubsystem clawSubsystem;
-
-    final DoubleSupplier leftX, leftY;
+    final DoubleSupplier leftY, rightY;
 
     private double inc = 0.1;
-    private double threshhold = 0.05;
+    private double deadzone = 0.05;
 
-    ClawDefaultCommand(DoubleSupplier leftX, DoubleSupplier leftY, ClawSubsystem clawSubsystem) {
-        this.leftX = leftX;
+    public ClawDefaultCommand(ClawSubsystem clawSubsystem, DoubleSupplier rightY, DoubleSupplier leftY) {
+        this.rightY = rightY;
         this.leftY = leftY;
 
         this.clawSubsystem = clawSubsystem;
@@ -27,20 +26,14 @@ public class ClawDefaultCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if (leftX.getAsDouble() < threshhold) {
-            clawSubsystem.setClawRotationServo(clawSubsystem.getClawRotation() - inc);
-        }
+       clawSubsystem.setClawMainElevation(leftY.getAsDouble());
 
-        if (leftX.getAsDouble() > threshhold) {
-            clawSubsystem.setClawRotationServo((clawSubsystem.getClawRotation()) + inc);
-        }
-
-        if (leftY.getAsDouble() < threshhold) {
-            clawSubsystem.setClawElevationServo(clawSubsystem.getClawElevation() - inc);
-        }
-
-        if (leftY.getAsDouble() > threshhold) {
-            clawSubsystem.setClawElevationServo((clawSubsystem.getClawElevation()) + inc);
-        }
+       /*
+       if (rightY.getAsDouble() > deadzone) {
+           clawSubsystem.setClawSecondaryElevation(clawSubsystem.getClawSecondaryElevation() + inc);
+       } else if (rightY.getAsDouble() < deadzone) {
+           clawSubsystem.setClawSecondaryElevation(clawSubsystem.getClawSecondaryElevation() - inc);
+       }
+        */
     }
 }

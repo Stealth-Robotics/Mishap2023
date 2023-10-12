@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsytems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ClawSubsystem extends SubsystemBase {
-    private Servo clawRotationServo;
-    private Servo clawElevationServo;
+
+    private DcMotor clawMainElevation;
+    private Servo clawSecondaryElevation;
     private Servo clawMainServo;
     private boolean clawOpen = false;
     private final double OPEN_POS = 1;
@@ -15,18 +17,16 @@ public class ClawSubsystem extends SubsystemBase {
     public ClawSubsystem(HardwareMap hardwareMap) {
 
         // grab servo motors
-        clawRotationServo = hardwareMap.get(Servo.class, "clawRotationServo");
-        clawElevationServo = hardwareMap.get(Servo.class, "clawElevationServo");
+        clawSecondaryElevation = hardwareMap.get(Servo.class, "clawSecondaryElevation");
         clawMainServo = hardwareMap.get(Servo.class, "clawMainServo");
+
+        // grab DC motors
+        clawMainElevation = hardwareMap.get(DcMotor.class, "clawMainElevation");
     }
 
-    public double getClawElevation() {
-        return clawElevationServo.getPosition();
-    }
-
-    public double getClawRotation() {
-        return clawRotationServo.getPosition();
-    }
+    /*public double getClawSecondaryElevation() {
+        return clawSecondaryElevation.getPosition();
+    }*/
 
     public boolean getClawOpen() {
         return clawOpen;
@@ -37,12 +37,12 @@ public class ClawSubsystem extends SubsystemBase {
         clawMainServo.setPosition(clawOpen ? OPEN_POS : CLOSE_POS);
     }
 
-    public void setClawRotationServo(double input) {
-        clawRotationServo.setPosition(input);
+    public void setClawSecondaryElevation(double input) {
+        clawSecondaryElevation.setPosition(input);
     }
 
-    public void setClawElevationServo(double input) {
-        clawElevationServo.setPosition(input);
+    public void setClawMainElevation(double input) {
+        clawMainElevation.setPower(input);
     }
 
     public void openClaw() {
