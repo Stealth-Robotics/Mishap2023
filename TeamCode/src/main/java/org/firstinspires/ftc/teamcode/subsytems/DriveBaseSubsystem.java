@@ -85,8 +85,6 @@ public class DriveBaseSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         telemetry.addData("Robot Heading: ", getAngle());
-        telemetry.addData("Rot X: ", rotX);
-        telemetry.addData("Rot Y: ", rotY);
         telemetry.addData("Heading offset: ", headingOffset);
     }
 }

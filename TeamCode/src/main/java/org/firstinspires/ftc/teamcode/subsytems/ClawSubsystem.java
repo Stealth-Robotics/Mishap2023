@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsytems;
 
+import static org.stealthrobotics.library.opmodes.StealthOpMode.telemetry;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,7 +13,7 @@ public class ClawSubsystem extends SubsystemBase {
     private Servo clawSecondaryElevation;
     private Servo clawMainServo;
     private boolean clawOpen = false;
-    private final double OPEN_POS = 1;
+    private final double OPEN_POS = 9;
     private final double CLOSE_POS = 0;
 
     public ClawSubsystem(HardwareMap hardwareMap) {
@@ -40,6 +42,7 @@ public class ClawSubsystem extends SubsystemBase {
     public void setClawSecondaryElevation(double input) {
         clawSecondaryElevation.setPosition(input);
     }
+
 
     public void setClawMainElevation(double input) {
         clawMainElevation.setPower(input);

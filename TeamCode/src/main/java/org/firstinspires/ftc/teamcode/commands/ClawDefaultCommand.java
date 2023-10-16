@@ -12,8 +12,11 @@ public class ClawDefaultCommand extends CommandBase {
     final DoubleSupplier leftY, rightY, leftX, rightX;
 
     private double inc = 0.1;
+    private double sensInc = 0.05;
+    private double sensMinClamp = 0.05;
+    private double sensMaxClamp = 2;
 
-    private double sensMain;
+    public double sensMain;
     private double sensSecond;
 
     private double deadzone = 0.05;
@@ -32,11 +35,9 @@ public class ClawDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
+        updateSensitivity();
 
        clawSubsystem.setClawMainElevation(leftY.getAsDouble() * sensMain);
-
-       updateSensitivity();
-
 
        /*
        if (rightY.getAsDouble() > deadzone) {
@@ -48,16 +49,16 @@ public class ClawDefaultCommand extends CommandBase {
     }
 
     private void updateSensitivity() {
-        if (sensMain < 1 && leftX.getAsDouble() > 0) {
-            sensMain = sensMain + inc;
-        } else if (sensMain > 0.1 && leftX.getAsDouble() < 0) {
-            sensMain = sensMain - inc;
+        if (sensMain < sensMaxClamp && leftX.getAsDouble() > 0 + deadzone) {
+            sensMain = sensMain + sensInc;
+        } else if (sensMain > sensMinClamp && leftX.getAsDouble() < 0) {
+            sensMain = sensMain - sensInc;
         }
 
-        if (sensSecond < 1 && rightX.getAsDouble() > 0) {
-            sensSecond = sensSecond + inc;
-        } else if (sensSecond > 0.1 && rightX.getAsDouble() < 0) {
-            sensSecond = sensSecond - inc;
+        if (sensSecond < sensMaxClamp && rightX.getAsDouble() > 0 - deadzone) {
+            sensSecond = sensSecond + sensInc;
+        } else if (sensSecond > sensMinClamp    && rightX.getAsDouble() < 0) {
+            sensSecond = sensSecond - sensInc;
         }
     }
 }
