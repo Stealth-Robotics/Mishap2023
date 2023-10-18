@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.subsytems.ClawSubsystem;
@@ -28,6 +29,7 @@ public class ClawDefaultCommand extends CommandBase {
         this.leftX = leftX;
         this.rightX = rightX;
 
+
         this.clawSubsystem = clawSubsystem;
 
         addRequirements(clawSubsystem);
@@ -35,9 +37,10 @@ public class ClawDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
+
         updateSensitivity();
 
-       clawSubsystem.setClawMainElevation(leftY.getAsDouble() * sensMain);
+        clawSubsystem.setClawMainElevation(leftY.getAsDouble() * sensMain);
 
        /*
        if (rightY.getAsDouble() > deadzone) {
@@ -49,15 +52,15 @@ public class ClawDefaultCommand extends CommandBase {
     }
 
     private void updateSensitivity() {
-        if (sensMain < sensMaxClamp && leftX.getAsDouble() > 0 + deadzone) {
+        if (sensMain < sensMaxClamp - inc && leftX.getAsDouble() > 0 + deadzone) {
             sensMain = sensMain + sensInc;
-        } else if (sensMain > sensMinClamp && leftX.getAsDouble() < 0) {
+        } else if (sensMain > sensMinClamp + inc && leftX.getAsDouble() < 0) {
             sensMain = sensMain - sensInc;
         }
 
-        if (sensSecond < sensMaxClamp && rightX.getAsDouble() > 0 - deadzone) {
+        if (sensSecond < sensMaxClamp - inc && rightX.getAsDouble() > 0 - deadzone) {
             sensSecond = sensSecond + sensInc;
-        } else if (sensSecond > sensMinClamp    && rightX.getAsDouble() < 0) {
+        } else if (sensSecond > sensMinClamp + inc && rightX.getAsDouble() < 0) {
             sensSecond = sensSecond - sensInc;
         }
     }

@@ -24,6 +24,9 @@ public class ClawSubsystem extends SubsystemBase {
 
         // grab DC motors
         clawMainElevation = hardwareMap.get(DcMotor.class, "clawMainElevation");
+
+        clawMainElevation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     /*public double getClawSecondaryElevation() {
