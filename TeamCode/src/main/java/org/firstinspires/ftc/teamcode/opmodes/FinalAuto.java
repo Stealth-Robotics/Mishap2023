@@ -39,7 +39,7 @@ public abstract class FinalAuto extends StealthOpMode {
     public Command getAutoCommand() {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> claw.toggleClaw()),
-                new InstantCommand(),
+                //new InstantCommand(() -> drive.moveForward(28)),
                 new EndOpModeCommand(this)
         );
     }

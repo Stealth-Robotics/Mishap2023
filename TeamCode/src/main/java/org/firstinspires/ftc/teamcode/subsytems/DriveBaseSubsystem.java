@@ -82,6 +82,29 @@ public class DriveBaseSubsystem extends SubsystemBase {
         backRight.setPower(backRightPower);
     }
 
+    /*public void moveForward(int clicks) {
+
+        double zero = -frontLeft.getCurrentPosition();
+        // either 28 or 537.7 per rev
+        if (zero + frontLeft.getCurrentPosition() < clicks) {
+            frontLeft.setPower(1);
+            frontRight.setPower(1);
+            backLeft.setPower(1);
+            backRight.setPower(1);
+        } else {
+            frontLeft.setPower(0);
+            frontRight.setPower(0);
+            backLeft.setPower(0);
+            backRight.setPower(0);
+        }
+    }
+
+     */
+
+    public void rotate(double angle) {
+
+    }
+
     @Override
     public void periodic() {
         telemetry.addData("Robot Heading: ", getAngle());
