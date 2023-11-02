@@ -48,6 +48,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
         imu.initialize(parameters);
 
         resetHeading();
+
+        headingOffset = -(Math.PI / 2);
     }
 
     public void resetHeading() {

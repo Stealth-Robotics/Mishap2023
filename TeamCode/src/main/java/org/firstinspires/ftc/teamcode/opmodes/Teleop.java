@@ -39,7 +39,7 @@ public abstract class Teleop extends StealthOpMode {
                 new ClawDefaultCommand(
                         clawSubsystem,
                         () -> opperatorGamepad.getRightY(),
-                        () -> opperatorGamepad.getLeftY(),
+                        () -> -opperatorGamepad.getLeftY(),
                         () -> opperatorGamepad.getRightX(),
                         () -> opperatorGamepad.getLeftX()
                 )
