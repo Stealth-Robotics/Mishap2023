@@ -64,7 +64,7 @@ public class ClawSubsystem extends SubsystemBase {
 
         if (rightY > deadzone) {
             val = getClawSecondaryElevation() + inc;
-            val = Math.max(0.05, Math.min(0.7, val));
+            val = Math.max(0.05, Math.min(0.65, val));
             setClawSecondaryElevation(val);
         } else if (rightY < -deadzone) {
             val = getClawSecondaryElevation() - inc;
