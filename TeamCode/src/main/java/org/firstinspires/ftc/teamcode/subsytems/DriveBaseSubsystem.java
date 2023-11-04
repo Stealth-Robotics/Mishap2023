@@ -53,7 +53,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     public void resetHeading() {
-        headingOffset = imu.getAngularOrientation().firstAngle;
+        headingOffset = imu.getAngularOrientation().firstAngle - (Math.PI / 2);
     }
 
     public double getAngle() {

@@ -11,9 +11,9 @@ import java.util.function.DoubleSupplier;
 
 public class ClawSubsystem extends SubsystemBase {
 
-    private DcMotor clawMainElevation;
-    private Servo clawSecondaryElevation;
-    private Servo clawMainServo;
+    private final DcMotor clawMainElevation;
+    private final Servo clawSecondaryElevation;
+    private final Servo clawMainServo;
     private boolean clawOpen = false;
     private final double OPEN_POS = 0.65;
     private final double CLOSE_POS = 0;
@@ -22,8 +22,10 @@ public class ClawSubsystem extends SubsystemBase {
     private final double sensMinClamp = 0.1;
     private final double sensMaxClamp = 1;
 
-    public double sensMain = (sensMaxClamp + sensMinClamp) / 2;
-    private double sensSecond = (sensMaxClamp + sensMinClamp) / 2;
+    private double sensMain = (sensMaxClamp + sensMinClamp) / 2;
+
+    private final double secondaryElevationMin = 0.0;
+    private final double secondaryElevationMax = 0.65;
 
     private final double deadzone = 0.05;
 
@@ -64,11 +66,11 @@ public class ClawSubsystem extends SubsystemBase {
 
         if (rightY > deadzone) {
             val = getClawSecondaryElevation() + inc;
-            val = Math.max(0.05, Math.min(0.65, val));
+            val = Math.max(secondaryElevationMin, Math.min(secondaryElevationMax, val));
             setClawSecondaryElevation(val);
         } else if (rightY < -deadzone) {
             val = getClawSecondaryElevation() - inc;
-            val = Math.max(0.05, Math.min(0.7, val));
+            val = Math.max(secondaryElevationMin, Math.min(secondaryElevationMax, val));
             setClawSecondaryElevation(val);
         }
     }
@@ -83,14 +85,6 @@ public class ClawSubsystem extends SubsystemBase {
         }
 
         sensMain = Math.max(sensMinClamp, Math.min(sensMaxClamp, sensMain));
-
-        if (rightX > deadzone) {
-            sensSecond += sensInc;
-        } else if (rightX < -deadzone) {
-            sensSecond -= sensInc;
-        }
-
-        sensSecond = Math.max(sensMinClamp, Math.min(sensMaxClamp, sensSecond));
     }
 
     public double getClawSecondaryElevation() {
