@@ -50,6 +50,9 @@ public abstract class Teleop extends StealthOpMode {
 
         driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP).
                 whenPressed(new InstantCommand(() -> driveBaseSubsystem.resetHeading()));
+
+        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).//Hi Joey!! I <3 U!
+                whenPressed(new InstantCommand(() -> driveBaseSubsystem.toggleRobotCentric()));
     }
 
     @SuppressWarnings("unused")

@@ -16,7 +16,7 @@ import org.stealthrobotics.library.commands.WaitBeforeCommand;
 import org.stealthrobotics.library.opmodes.StealthOpMode;
 @SuppressWarnings("unused")
 @Autonomous()
-public abstract class FinalAuto extends StealthOpMode {
+public class FinalAuto extends StealthOpMode {
 
     private DriveBaseSubsystem drive;
     private ClawSubsystem claw;
@@ -38,8 +38,8 @@ public abstract class FinalAuto extends StealthOpMode {
     @Override
     public Command getAutoCommand() {
         return new SequentialCommandGroup(
-                new InstantCommand(() -> claw.toggleClaw()),
-                //new InstantCommand(() -> drive.moveForward(28)),
+                new InstantCommand(() -> claw.mainElevationMoveTo(-500)),
+                new InstantCommand(() -> drive.moveForward(28)),
                 new EndOpModeCommand(this)
         );
     }

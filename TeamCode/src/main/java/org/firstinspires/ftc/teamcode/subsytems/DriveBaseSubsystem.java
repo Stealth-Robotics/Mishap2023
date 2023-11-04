@@ -17,6 +17,9 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
     private double rotX = 0;
     private double rotY = 0;
+    private double leftX;
+
+    private boolean robotCentric;
 
     private double headingOffset;
 
@@ -62,12 +65,20 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
     public void drive(double leftStickY, double leftStickX, double rightStickX)
     {
-        double x = leftStickX;
-        double y = -leftStickY;
+        // Scale down input
+        leftStickX *= 0.7;
+        leftStickY *= 0.7;
+        rightStickX *= 0.7;
+
+        if (robotCentric) {
+            resetHeading();
+        }
+
+        leftX = leftStickX;
         double rotation = rightStickX;
 
-        rotX = x * Math.cos(getAngle()) - y * Math.sin(getAngle());
-        rotY = x * Math.sin(getAngle()) + y * Math.cos(getAngle());
+        rotX = leftX * Math.cos(getAngle()) - leftStickY * Math.sin(getAngle());
+        rotY = leftX * Math.sin(getAngle()) + leftStickY * Math.cos(getAngle());
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -84,11 +95,20 @@ public class DriveBaseSubsystem extends SubsystemBase {
         backRight.setPower(backRightPower);
     }
 
-    /*public void moveForward(int clicks) {
+    public void moveRight(int clicks) {
+        double zero = -frontRight.getCurrentPosition();
 
-        double zero = -frontLeft.getCurrentPosition();
+        while (zero + frontRight.getCurrentPosition() < clicks) {
+            leftX = 1;
+        }
+    }
+
+
+    public void moveForward(int clicks) {
+
+        double zero = -frontRight.getCurrentPosition();
         // either 28 or 537.7 per rev
-        if (zero + frontLeft.getCurrentPosition() < clicks) {
+        if (zero + frontRight.getCurrentPosition() < clicks) {
             frontLeft.setPower(1);
             frontRight.setPower(1);
             backLeft.setPower(1);
@@ -101,10 +121,12 @@ public class DriveBaseSubsystem extends SubsystemBase {
         }
     }
 
-     */
-
     public void rotate(double angle) {
 
+    }
+
+    public void toggleRobotCentric() {
+        robotCentric = !robotCentric;
     }
 
     @Override

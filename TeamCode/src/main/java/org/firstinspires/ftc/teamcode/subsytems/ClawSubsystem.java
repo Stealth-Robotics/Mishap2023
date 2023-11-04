@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import java.util.function.DoubleSupplier;
 
 public class ClawSubsystem extends SubsystemBase {
@@ -38,11 +40,8 @@ public class ClawSubsystem extends SubsystemBase {
         // grab DC motors
         clawMainElevation = hardwareMap.get(DcMotor.class, "clawMainElevation");
 
+        // set zero power behavior
         clawMainElevation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        clawMainServo.setPosition(0);
-
-        setClawSecondaryElevation(0.5);
     }
 
     public void claw(DoubleSupplier rightY, DoubleSupplier
@@ -109,6 +108,21 @@ public class ClawSubsystem extends SubsystemBase {
         clawMainElevation.setPower(input);
     }
 
+    public void mainElevationMoveTo(int clicks) {
+        int near = 25;
+
+        while (clawMainElevation.getCurrentPosition() > clicks + near ||
+                clawMainElevation.getCurrentPosition() < clicks - near) {
+            if (clawMainElevation.getCurrentPosition() > clicks) {
+                clawMainElevation.setPower(-1);
+            } else if (clawMainElevation.getCurrentPosition() < clicks) {
+                clawMainElevation.setPower(1);
+            } else {
+                clawMainElevation.setPower(0);
+            }
+        }
+    }
+
     public void openClaw() {
         clawMainServo.setPosition(OPEN_POS);
     }
@@ -118,8 +132,6 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        telemetry.addData("Claw Open: ", clawOpen);
-        telemetry.addData("Right Y: ", rightY);
-        telemetry.addData("Secondary Elevation: ", getClawSecondaryElevation());
+        telemetry.addData("Main Elevation position", clawMainElevation.getCurrentPosition());
     }
 }
