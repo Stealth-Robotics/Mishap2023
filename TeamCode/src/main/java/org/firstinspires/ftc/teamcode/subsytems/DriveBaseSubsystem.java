@@ -10,16 +10,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class DriveBaseSubsystem extends SubsystemBase {
-    private DcMotor frontLeft;
-    private DcMotor frontRight;
-    private DcMotor backLeft;
-    private DcMotor backRight;
+    private final DcMotor frontLeft;
+    private final DcMotor frontRight;
+    private final DcMotor backLeft;
+    private final DcMotor backRight;
 
     private double rotX = 0;
     private double rotY = 0;
-    private double leftX;
-
-    private boolean robotCentric;
+    private boolean robotCentric = false;
+    private boolean reverseHeading = false;
 
     private double headingOffset;
 
@@ -57,6 +56,11 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
     public void resetHeading() {
         headingOffset = imu.getAngularOrientation().firstAngle - (Math.PI / 2);
+
+        if (!robotCentric && reverseHeading) {
+            headingOffset += Math.PI;
+        }
+
     }
 
     public double getAngle() {
@@ -72,37 +76,25 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
         if (robotCentric) {
             resetHeading();
+            if (reverseHeading) {
+                headingOffset += Math.PI;
+            }
         }
 
-        leftX = leftStickX;
+        double x = leftStickX;
+        double y = -leftStickY;
         double rotation = rightStickX;
 
-        rotX = leftX * Math.cos(getAngle()) - leftStickY * Math.sin(getAngle());
-        rotY = leftX * Math.sin(getAngle()) + leftStickY * Math.cos(getAngle());
+        rotX = x * Math.cos(getAngle()) - y * Math.sin(getAngle());
+        rotY = x * Math.sin(getAngle()) + y * Math.cos(getAngle());
 
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rotation), 1);
-        double frontLeftPower = (rotY + rotX + rotation) / denominator;
-        double backLeftPower = (rotY - rotX + rotation) / denominator;
-        double frontRightPower = (rotY - rotX - rotation) / denominator;
-        double backRightPower = (rotY + rotX - rotation) / denominator;
 
-        frontLeft.setPower(frontLeftPower);
-        backLeft.setPower(backLeftPower);
-        frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);
+        frontLeft.setPower((rotY + rotX + rotation) / denominator);
+        backLeft.setPower((rotY - rotX + rotation) / denominator);
+        frontRight.setPower((rotY - rotX - rotation) / denominator);
+        backRight.setPower((rotY + rotX - rotation) / denominator);
     }
-
-    public void moveRight(int clicks) {
-        double zero = -frontRight.getCurrentPosition();
-
-        while (zero + frontRight.getCurrentPosition() < clicks) {
-            leftX = 1;
-        }
-    }
-
 
     public void moveForward(int clicks) {
 
@@ -121,17 +113,18 @@ public class DriveBaseSubsystem extends SubsystemBase {
         }
     }
 
-    public void rotate(double angle) {
-
-    }
-
     public void toggleRobotCentric() {
         robotCentric = !robotCentric;
+    }
+
+    public void flipHeading() {
+        reverseHeading = !reverseHeading;
     }
 
     @Override
     public void periodic() {
         telemetry.addData("Robot Heading: ", getAngle());
         telemetry.addData("Heading offset: ", headingOffset);
+        telemetry.addData("Is robot centric: ", robotCentric);
     }
 }

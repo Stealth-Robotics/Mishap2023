@@ -103,7 +103,6 @@ public class ClawSubsystem extends SubsystemBase {
         clawSecondaryElevation.setPosition(input);
     }
 
-
     public void setClawMainElevation(double input) {
         clawMainElevation.setPower(input);
     }
@@ -132,6 +131,8 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        telemetry.addData("Main Elevation position", clawMainElevation.getCurrentPosition());
+        telemetry.addData("Main Elevation position: ", clawMainElevation.getCurrentPosition());
+        telemetry.addData("Secondary Elevation position: ", clawSecondaryElevation.getPosition());
+        telemetry.addData("Claw is open: ", clawOpen);
     }
 }

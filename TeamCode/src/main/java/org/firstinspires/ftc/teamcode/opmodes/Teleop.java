@@ -26,15 +26,12 @@ public abstract class Teleop extends StealthOpMode {
         driverGamepad = new GamepadEx(gamepad1);
         opperatorGamepad = new GamepadEx(gamepad2);
 
-        driveBaseSubsystem.setDefaultCommand(
-                new DriveDefaultCommand(
-                        driveBaseSubsystem,
-                        () -> driverGamepad.getLeftY(),
-                        () -> driverGamepad.getLeftX(),
-                        () -> -driverGamepad.getRightX()
-                )
-        );
+        opperatorGamepadInputs();
 
+        driverGamepadInputs();
+    }
+
+    private void opperatorGamepadInputs() {
         clawSubsystem.setDefaultCommand(
                 new ClawDefaultCommand(
                         clawSubsystem,
@@ -47,12 +44,26 @@ public abstract class Teleop extends StealthOpMode {
 
         opperatorGamepad.getGamepadButton(GamepadKeys.Button.A).
                 whenPressed(new InstantCommand(() -> clawSubsystem.toggleClaw()));
+    }
+
+    private void driverGamepadInputs() {
+        driveBaseSubsystem.setDefaultCommand(
+                new DriveDefaultCommand(
+                        driveBaseSubsystem,
+                        () -> driverGamepad.getLeftY(),
+                        () -> driverGamepad.getLeftX(),
+                        () -> -driverGamepad.getRightX()
+                )
+        );
 
         driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP).
                 whenPressed(new InstantCommand(() -> driveBaseSubsystem.resetHeading()));
 
-        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).//Hi Joey!! I <3 U!
+        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).
                 whenPressed(new InstantCommand(() -> driveBaseSubsystem.toggleRobotCentric()));
+
+        driverGamepad.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).
+               whenPressed(new InstantCommand(() -> driveBaseSubsystem.flipHeading()));
     }
 
     @SuppressWarnings("unused")
