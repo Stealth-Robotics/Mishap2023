@@ -13,29 +13,40 @@ import java.util.function.DoubleSupplier;
 
 public class ClawSubsystem extends SubsystemBase {
 
+
+    // Motors
     private final DcMotor clawMainElevation;
+
+    // Servos
     private final Servo clawSecondaryElevation;
-    private final Servo clawMainServo;
-    private boolean clawOpen = false;
+    private final Servo leftClaw;
+    private final Servo rightClaw;
+
+    // Servo States
+    private boolean leftClawOpen = false;
+    private boolean rightClawOpen = false;
+
+    // Servo Constants
     private final double OPEN_POS = 0.65;
     private final double CLOSE_POS = 0;
-    private Double leftY, rightY, leftX, rightX;
-
-    private final double sensMinClamp = 0.1;
-    private final double sensMaxClamp = 1;
-
-    private double sensMain = (sensMaxClamp + sensMinClamp) / 2;
-
     private final double secondaryElevationMin = 0.0;
     private final double secondaryElevationMax = 0.65;
 
+    // Sensitivity Constants
+    private final double sensMinClamp = 0.1;
+    private final double sensMaxClamp = 1;
+    private double sensMain = (sensMaxClamp + sensMinClamp) / 2;
+
+    // Inputs
+    private Double leftY, rightY, leftX, rightX;
     private final double deadzone = 0.05;
 
     public ClawSubsystem(HardwareMap hardwareMap) {
 
         // grab servo motors
         clawSecondaryElevation = hardwareMap.get(Servo.class, "clawSecondaryElevation");
-        clawMainServo = hardwareMap.get(Servo.class, "clawMainServo");
+        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
+        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
 
         // grab DC motors
         clawMainElevation = hardwareMap.get(DcMotor.class, "clawMainElevation");
@@ -90,13 +101,22 @@ public class ClawSubsystem extends SubsystemBase {
         return clawSecondaryElevation.getPosition();
     }
 
-    public boolean getClawOpen() {
-        return clawOpen;
+    public boolean getLeftClawOpen() {
+        return leftClawOpen;
     }
 
-    public void toggleClaw() {
-        clawOpen = !clawOpen;
-        clawMainServo.setPosition(clawOpen ? OPEN_POS : CLOSE_POS);
+    public boolean getRightClawOpen() {
+        return rightClawOpen;
+    }
+
+    public void toggleLeftClaw() {
+        leftClawOpen = !leftClawOpen;
+        leftClaw.setPosition(leftClawOpen ? OPEN_POS : CLOSE_POS);
+    }
+
+    public void toggleRightClaw() {
+        rightClawOpen = !rightClawOpen;
+        rightClaw.setPosition(rightClawOpen ? OPEN_POS : CLOSE_POS);
     }
 
     public void setClawSecondaryElevation(double input) {
@@ -122,17 +142,30 @@ public class ClawSubsystem extends SubsystemBase {
         }
     }
 
-    public void openClaw() {
-        clawMainServo.setPosition(OPEN_POS);
+    public void openLeftClaw() {
+        leftClawOpen = true;
+        leftClaw.setPosition(OPEN_POS);
     }
 
-    public void closeClaw() {
-        clawMainServo.setPosition(CLOSE_POS);
+    public void openRightClaw() {
+        rightClawOpen = true;
+        rightClaw.setPosition(OPEN_POS);
+    }
+
+    public void closeLeftClaw() {
+        leftClawOpen = false;
+        leftClaw.setPosition(CLOSE_POS);
+    }
+
+    public void closeRightClaw() {
+        rightClawOpen = false;
+        rightClaw.setPosition(CLOSE_POS);
     }
 
     public void periodic() {
         telemetry.addData("Main Elevation position: ", clawMainElevation.getCurrentPosition());
         telemetry.addData("Secondary Elevation position: ", clawSecondaryElevation.getPosition());
-        telemetry.addData("Claw is open: ", clawOpen);
+        telemetry.addData("Left is open: ", leftClawOpen);
+        telemetry.addData("Right is open: ", rightClawOpen);
     }
 }
