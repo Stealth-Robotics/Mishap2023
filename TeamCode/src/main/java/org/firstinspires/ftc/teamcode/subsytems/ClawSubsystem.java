@@ -30,7 +30,7 @@ public class ClawSubsystem extends SubsystemBase {
     private final double OPEN_POS = 0.65;
     private final double CLOSE_POS = 0;
     private final double secondaryElevationMin = 0.0;
-    private final double secondaryElevationMax = 0.65;
+    private final double secondaryElevationMax = 1;
 
     // Sensitivity Constants
     private final double sensMinClamp = 0.1;
@@ -127,7 +127,7 @@ public class ClawSubsystem extends SubsystemBase {
         clawMainElevation.setPower(input);
     }
 
-    public void mainElevationMoveTo(int clicks) {
+     public void mainElevationMoveTo(int clicks) {
         int near = 25;
 
         while (clawMainElevation.getCurrentPosition() > clicks + near ||
@@ -163,7 +163,7 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        telemetry.addData("Main Elevation position: ", clawMainElevation.getCurrentPosition());
+        //telemetry.addData("Main Elevation position: ", clawMainElevation.getCurrentPosition());
         telemetry.addData("Secondary Elevation position: ", clawSecondaryElevation.getPosition());
         telemetry.addData("Left is open: ", leftClawOpen);
         telemetry.addData("Right is open: ", rightClawOpen);
