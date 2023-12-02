@@ -48,6 +48,9 @@ public abstract class Teleop extends StealthOpMode {
         opperatorGamepad.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> clawSubsystem.toggleRightClaw()));
 
+        opperatorGamepad.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+                new InstantCommand(() -> clawSubsystem.setClawSecondaryElevation(0.35)));
+
     }
 
     private void driverGamepadInputs() {
